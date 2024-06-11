@@ -1,13 +1,18 @@
-FROM alpine:3.7
+# https://www.linuxcontainers.dev
+# Source repository: https://github.com/linuxcontainers/cloudflare-ddns-docker
+# Source licensed under the MIT License: https://github.com/linuxcontainers/cloudflare-ddns-docker/blob/master/LICENSE
 
-LABEL maintainer="officialEmmel"
-LABEL version="1.0"
-LABEL description="Cloudflare DDNS Updater"
-LABEL repository="https://github.com/officialEmmel/cloudflare-ddns-docker"
+FROM alpine:latest
 
-RUN apk update 
-RUN apk add bash
-RUN apk add curl
+LABEL maintainer="peter@linuxcontainers.dev" \
+    org.opencontainers.image.authors="Peter, peter@linuxcontainers.dev, https://www.linuxcontainers.dev/" \
+    org.opencontainers.image.source="https://github.com/linuxcontainers/cloudflare-ddns-docker" \
+    org.opencontainers.image.title="cloudflare-ddns-docker" 
+
+RUN /sbin/apk update --no-cache \
+    && /sbin/apk upgrade --no-cache \
+    && /sbin/apk add bash curl --no-cache \
+    && /bin/rm -rf /var/cache/apk/*
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

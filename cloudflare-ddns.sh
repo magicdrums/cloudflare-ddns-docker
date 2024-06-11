@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# the cf ddns script by K0p1-Git modified with some notification options and dockerized by me
+# This script was forked from https://github.com/officialEmmel/cloudflare-ddns-docker which was a fork of the the cf ddns script by K0p1-Git modified with some notification options and dockerized by me
 
 #env vars
 auth_email="${AUTH_EMAIL}"
@@ -35,26 +35,30 @@ send_notification() {
     curl --silent -o /dev/null  -L -X POST $slackuri \
     --data-raw '{
       "channel": "'$slackchannel'",
-      "text" : "'"$1"'"
+      "text" : "'"$sitename"' Updated: '$record_name''"'"'s'""' new IP Address is '$ip'"
     }'
   fi
+
   if [[ -n $discorduri  ]]; then
     log "Sending notification to discord"
     curl --silent -o /dev/null  -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST \
     --data-raw '{
-      "content" : "'"$1"'"
+      "content" : "'"$sitename"' Updated: '$record_name''"'"'s'""' new IP Address is '$ip'"
     }' $discorduri
 
   fi
+
   if [[ -n $ntfyuri ]]; then
     log "Sending notification to ntfy"
     curl --silent -o /dev/null -d "$(echo $1)" $ntfyuri
   fi
+
   if [[ -n $telegram_token ]] && [[ -n $telegram_chat_id ]]; then
     log "Sending notification to telegram"
     curl --silent -o /dev/null  -H 'Content-Type: application/json' -X POST \
-    --data-raw '{
-      "chat_id": "'$telegram_chat_id'", "text": "'"$1"'"
+     --data-raw '{
+        "chat_id": "'$telegram_chat_id'", 
+        "text" : "'"$sitename"' Updated: '$record_name''"'"'s'""' new IP Address is '$ip'"
     }' https://api.telegram.org/bot$telegram_token/sendMessage
   fi
 }
