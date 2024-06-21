@@ -6,7 +6,7 @@ FROM alpine:latest
 
 LABEL maintainer="peter@linuxcontainers.dev" \
     org.opencontainers.image.authors="Peter, peter@linuxcontainers.dev, https://www.linuxcontainers.dev/" \
-    org.opencontainers.image.source="https://github.com/linuxcontainers/cloudflare-ddns-docker" \
+    org.opencontainers.image.source="https://github.com/magicdrums/cloudflare-ddns-docker" \
     org.opencontainers.image.title="cloudflare-ddns-docker" 
 
 RUN /sbin/apk update --no-cache \
